@@ -1,3 +1,5 @@
 from django.contrib import admin
 
-# Register your models here.
+from netdisk.models import SingleFile
+
+admin.site.register(SingleFile)
