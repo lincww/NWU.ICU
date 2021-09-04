@@ -7,6 +7,7 @@ class Announcement(models.Model):
         ('all', '全局'),
         ('course', '课程评价'),
         ('report', '自动填报'),
+        ('netdisk', '文件分享')
     ]
 
     content = models.TextField()
