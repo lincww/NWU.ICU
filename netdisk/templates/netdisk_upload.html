@@ -14,12 +14,12 @@
         <el-button type="primary" icon="el-icon-arrow-left" @click="pageBack">返回</el-button>
     </div>
     <br/>
-    <div id="upload">
+    <div id="upload" style="text-align: center">
         <el-upload
                 class="upload"
                 :before-upload="beforeUpload"
                 drag
-                action="/upload/netdisk/"
+                action="/api/upload/netdisk/"
                 multiple
                 :on-error="fileUploadError"
                 with-credentials>
