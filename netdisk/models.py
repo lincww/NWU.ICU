@@ -4,8 +4,8 @@ from django.db import models
 # Class File
 class SingleFile(models.Model):
     name = models.CharField(verbose_name="File name", max_length=1024)  # TODO: What actually the max_length should be?
-    describe = models.TextField(verbose_name="Description", max_length=10240)
-    hash = models.TextField(verbose_name="MD5 hash of the file", max_length=16)
+    description = models.TextField()
+    hash = models.CharField(verbose_name="MD5 hash of the file", max_length=16)
     location = models.CharField(verbose_name="Location of the file", blank=True, max_length=1024)
     tags = models.JSONField(verbose_name="Tags of the file, which is an Array")
     size = models.IntegerField(verbose_name="Size of the file, by KiB")
@@ -15,3 +15,12 @@ class SingleFile(models.Model):
     is_deleted = models.BooleanField(verbose_name="While file been deleted, the field is False")
     is_folder = models.BooleanField(verbose_name="Whether this is a folder")
     download_time_count = models.IntegerField()
+
+
+class PendingFiles(models.Model):
+    name = models.TextField("File name")
+    path = models.TextField(verbose_name='File path to the upload root', max_length=1024)
+    upload_user_id = models.IntegerField()
+    size = models.IntegerField("Size By KiB")
+    time = models.DateTimeField("Upload time")
+    description = models.TextField()
