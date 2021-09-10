@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block subtitle %}文件分享{% endblock %}
+
+{% block content %}
+    <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/element-plus@1.1.0-beta.9/dist/index.css"
+  />
+    <script src="https://cdn.jsdelivr.net/npm/element-plus@1.1.0-beta.9"></script>
+    {% for announcement in announcements %}
+        {% if announcement.type == 'netdisk' %}
+            <div class="alert alert-primary" role="alert">
+                公告: {{ announcement.content | linebreaks }} 最后更新时间: {{ announcement.update_time }}
+            </div>
+        {% endif %}
+    {% endfor %}
+
+    {% block netdisk_content %}{% endblock %}
+{% endblock %}

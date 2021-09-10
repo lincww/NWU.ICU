@@ -2,11 +2,12 @@ from django.db import models
 
 
 # Class File
+# TODO:解决一下非空问题
 class SingleFile(models.Model):
-    name = models.CharField(verbose_name="File name", max_length=1024)  # TODO: What actually the max_length should be?
-    description = models.TextField()
-    hash = models.CharField(verbose_name="MD5 hash of the file", max_length=16)
-    location = models.CharField(verbose_name="Location of the file", blank=True, max_length=1024)
+    name = models.CharField(verbose_name="File name", max_length=1024)
+    description = models.TextField(blank=True)
+    hash = models.CharField(verbose_name="MD5 hash of the file", max_length=100)
+    location = models.CharField(verbose_name="Location of the file", max_length=1024)
     tags = models.JSONField(verbose_name="Tags of the file, which is an Array")
     size = models.IntegerField(verbose_name="Size of the file, by KiB")
     time = models.DateTimeField(verbose_name="Time file uploaded")
@@ -19,8 +20,9 @@ class SingleFile(models.Model):
 
 class PendingFiles(models.Model):
     name = models.TextField("File name")
-    path = models.TextField(verbose_name='File path to the upload root', max_length=1024)
-    upload_user_id = models.IntegerField()
+    hash = models.CharField("MD5",max_length=100)
+    path = models.TextField(verbose_name='full path of file', max_length=1024)
+    user_id = models.IntegerField()
     size = models.IntegerField("Size By KiB")
     time = models.DateTimeField("Upload time")
     description = models.TextField()

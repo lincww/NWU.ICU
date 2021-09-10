@@ -28,6 +28,7 @@ from common.views import (
 from course_assessment.views import CourseAddView, CourseList, CourseView, TeacherView
 from report.views import ReportIndex, check_cookie_status
 from user.views import Login, Logout, RefreshCookies
+from netdisk.views import NetDiskListView, UploadView, UploadAction, SearchFile,RedirectToDownloadAddress
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -49,4 +50,9 @@ urlpatterns = [
     path('api/report/check-cookie-status/', check_cookie_status),
     re_path(r'^report/*$', ReportIndex.as_view()),  # 会有人访问 /// 这样的坑爹路径
     path('refresh_cookies/', RefreshCookies.as_view()),
+    path('netdisk/', NetDiskListView.as_view()),
+    path('netdisk/upload/', UploadView.as_view()),
+    path('netdisk/search', SearchFile.as_view()),
+    path('api/netdisk/upload', UploadAction.as_view()),
+    path('api/netdisk/download', RedirectToDownloadAddress.as_view())
 ]

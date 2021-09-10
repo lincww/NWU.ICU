@@ -14,3 +14,15 @@ WEBPUSH_SETTINGS = {
     "VAPID_PRIVATE_KEY":"Vapid Private Key",
     "VAPID_ADMIN_EMAIL": "admin@example.com"
 }
+
+# use for NetDisk
+LOCAL_UPLOAD_BASE_DIR = "./uploads/"  # Must be end with '/'. And remember to create the folder first.
+PROVIDERS = {
+    # TODO: Finish this
+    "OSS": {
+
+    },
+    "QiNiu": {
+
+    }
+}

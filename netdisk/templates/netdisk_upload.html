@@ -1,61 +1,88 @@
-<!DOCTYPE html>
-<!--FIXME 实在是不会用bootstrap去写个好用的上传前端...-->
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>上传 ｜ NWU.ICU｜文件分享 </title>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui/lib/theme-chalk/index.css">
-    <script src="https://cdn.jsdelivr.net/npm/element-ui/lib/index.js"></script>
-</head>
-<body>
-<div id="app">
-    <div id="navigation">
-        <el-button type="primary" icon="el-icon-arrow-left" @click="pageBack">返回</el-button>
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>上传 ｜ NWU.ICU｜文件分享 </title>#}
+{#    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>#}
+{#    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui/lib/theme-chalk/index.css">#}
+{#    <script src="https://cdn.jsdelivr.net/npm/element-ui/lib/index.js"></script>#}
+{#</head>#}
+{#<body>#}
+{% extends "netdisk_base.html" %}
+
+{% block netdisk_content %}
+    <div id="app">
+        <div id="navigation">
+            <el-button type="primary" icon="el-icon-arrow-left" @click="pageBack">返回</el-button>
+        </div>
+        <br/>
+        <div id="upload" style="text-align: center">
+            <el-upload
+                    class="upload"
+                    :before-upload="beforeUpload"
+                    drag
+                    action="/api/netdisk/upload"
+                    multiple
+                    :on-error="fileUploadError"
+                    :headers="header"
+                    with-credentials>
+                <i class="el-icon-upload"></i>
+                <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                <div class="el-upload__tip" slot="tip">
+                    只能上传不大于300M的文件，更大的文件请<a href="mailto:admin@nwu.icu">向站长发邮件</a>
+                </div>
+            </el-upload>
+        </div>
     </div>
-    <br/>
-    <div id="upload" style="text-align: center">
-        <el-upload
-                class="upload"
-                :before-upload="beforeUpload"
-                drag
-                action="/api/upload/netdisk/"
-                multiple
-                :on-error="fileUploadError"
-                with-credentials>
-            <i class="el-icon-upload"></i>
-            <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-            <div class="el-upload__tip" slot="tip">
-                只能上传不大于300M的文件，更大的文件请<a href="mailto:admin@nwu.icu">向站长发邮件</a>
-            </div>
-        </el-upload>
-    </div>
-</div>
-<script>
-    let app = new Vue({
-        el: '#app',
-        delimiters: ['{[', ']}'],
-        data: {},
-        methods: {
-            pageBack: function () {
-                window.history.go(-1)
-            },
-            beforeUpload: function (file) {
-                const isLt300M = file.size / 1024 / 1024 <= 300;
-                if (!isLt300M) {
-                    this.$message.error('上传文件需小于300M')
-                }
-                return isLt300M
-            },
-            fileUploadError: function (err, file, filelist) {
-                this.$alert('上传出错，请重试或联系站长\n' + err, '上传出错', {
-                    confirmButtonText: '确定',
-                    callback: action => {
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
                     }
-                })
+                }
+            }
+            return cookieValue;
+        }
+
+        const csrftoken = getCookie('csrftoken');
+        const upload = {
+            delimiters: ['{[', ']}'],
+            data() {
+                return {
+                    header: {"X-CSRFToken": csrftoken}
+                }
+            },
+            methods: {
+                pageBack: function () {
+                    window.history.go(-1)
+                },
+                beforeUpload: function (file) {
+                    const isLt300M = file.size / 1024 / 1024 <= 300;
+                    if (!isLt300M) {
+                        this.$message.error('上传文件需小于300M')
+                    }
+                    return isLt300M
+                },
+                fileUploadError: function (err, file, filelist) {
+                    this.$alert('上传出错，请重试或联系站长\n' + err, '上传出错', {
+                        confirmButtonText: '确定',
+                        callback: action => {
+                        }
+                    })
+                }
             }
         }
-    })
-</script>
-</body>
-</html>
+        let app = Vue.createApp(upload)
+        app.use(ElementPlus);
+        app.mount('#app')
+    </script>
+{% endblock %}
+{#</body>#}
+{#</html>#}
