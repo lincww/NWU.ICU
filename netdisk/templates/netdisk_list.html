@@ -13,7 +13,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item" v-for="path in breadCrumbData">
-                    <a :href="path.path">{[path.name]}</a>
+                    <a :href="path.path"><i class="fa fa-folder-open-o"> <span v-html="path.name"></span> </i></a>
                 </li>
             </ol>
         </nav>
@@ -37,18 +37,24 @@
                 </tr>
                 </thead>
                 <tbody>
+                {#                    TODO:改成js渲染，用以增加排序功能#}
                 {% for file in raw_data %}
-                <tr>
-{#                    <th scope="row">1</th>#}
-                    {% if file.is_folder %}
-                        <td><a href="/netdisk/?path={{ path }}{{ file.name }}/"><i class="el-icon-folder el-icon--right"></i>{{ file.name }}</a> </td>
-                    {% else %}
-                        <td><a href="/netdisk/download?hash={{ file.hash }}"><i class="el-icon-document el-icon--right"></i>{{ file.name }}</a></td>
-                    {% endif %}
-                    <td>{{ file.size | filesizeformat }}</td>
-                    <td>{{ file.time }}</td>
-                    <td>#TODO</td>
-                </tr>
+                    <tr>
+                        {% if file.is_folder %}
+                            <td><a href="/netdisk/?path={{ path }}{{ file.name }}/"><i
+                                    class="el-icon-folder el-icon--right"></i>{{ file.name }}</a></td>
+                            <td>文件夹</td>
+                            <td>{{ file.time }}</td>
+                            <td></td>
+                        {% else %}
+                            <td><a href="/netdisk/download?hash={{ file.hash }}"><i
+                                    class="el-icon-document el-icon--right"></i>{{ file.name }}</a></td>
+                            <td>{{ file.size | filesizeformat }}</td>
+                            <td>{{ file.time }}</td>
+                            <td><a href="/netdisk/download?hash={{ file.hash }}"><i
+                                    class="el-icon-download el-icon--right"></i>下载</a></td>
+                        {% endif %}
+                    </tr>
                 {% endfor %}
                 </tbody>
             </table>
@@ -83,7 +89,7 @@
                     let paths = this.path.split("/")
                     let result = [{
                         path: "/netdisk/?path=/",
-                        name: "主页"
+                        name: "<i class='el-icon-house el-icon--right'></i>Home"
                     }]
                     let path_now = '/'
                     for (let i of paths) {
@@ -95,7 +101,6 @@
                             })
                         }
                     }
-
                     return result
                 }
             }

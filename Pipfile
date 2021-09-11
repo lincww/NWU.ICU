@@ -13,6 +13,7 @@ django-crispy-forms = "*"
 crispy-bootstrap5 = "*"
 django-silk = "*"
 pywebpush = "*"
+cos-python-sdk-v5 = "*"
 
 [dev-packages]
 pre-commit = "*"

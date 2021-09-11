@@ -17,6 +17,9 @@
         </div>
         <br/>
         <div id="upload" style="text-align: center">
+            <div class="el-upload__tip" slot="tip">
+                只能上传不大于300M的文件，更大的文件请<a href="mailto:admin@nwu.icu">向站长发邮件</a>
+            </div>
             <el-upload
                     class="upload"
                     :before-upload="beforeUpload"
@@ -28,9 +31,6 @@
                     with-credentials>
                 <i class="el-icon-upload"></i>
                 <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                <div class="el-upload__tip" slot="tip">
-                    只能上传不大于300M的文件，更大的文件请<a href="mailto:admin@nwu.icu">向站长发邮件</a>
-                </div>
             </el-upload>
         </div>
     </div>
@@ -51,12 +51,12 @@
             return cookieValue;
         }
 
-        const csrftoken = getCookie('csrftoken');
+        const csrfToken = getCookie('csrftoken');
         const upload = {
             delimiters: ['{[', ']}'],
             data() {
                 return {
-                    header: {"X-CSRFToken": csrftoken}
+                    header: {"X-CSRFToken": csrfToken}
                 }
             },
             methods: {
@@ -74,7 +74,8 @@
                     this.$alert('上传出错，请重试或联系站长\n' + err, '上传出错', {
                         confirmButtonText: '确定',
                         callback: action => {
-                        }
+                        },
+                        dangerouslyUseHTMLString: true,
                     })
                 }
             }

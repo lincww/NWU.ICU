@@ -28,7 +28,8 @@ from common.views import (
 from course_assessment.views import CourseAddView, CourseList, CourseView, TeacherView
 from report.views import ReportIndex, check_cookie_status
 from user.views import Login, Logout, RefreshCookies
-from netdisk.views import NetDiskListView, UploadView, UploadAction, SearchFile,RedirectToDownloadAddress
+from netdisk.views import NetDiskListView, NetDiskUploadView, NetDiskUploadAction, SearchFile, \
+    NetDiskRedirectToDownloadAddress, NetDiskPendingFileManager
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -51,8 +52,9 @@ urlpatterns = [
     re_path(r'^report/*$', ReportIndex.as_view()),  # 会有人访问 /// 这样的坑爹路径
     path('refresh_cookies/', RefreshCookies.as_view()),
     path('netdisk/', NetDiskListView.as_view()),
-    path('netdisk/upload/', UploadView.as_view()),
+    path('netdisk/upload/', NetDiskUploadView.as_view()),
     path('netdisk/search', SearchFile.as_view()),
-    path('api/netdisk/upload', UploadAction.as_view()),
-    path('api/netdisk/download', RedirectToDownloadAddress.as_view())
+    path('api/netdisk/upload', NetDiskUploadAction.as_view()),
+    path('netdisk/download', NetDiskRedirectToDownloadAddress.as_view()),
+    path('netdisk/admin/',NetDiskPendingFileManager.as_view()),
 ]

@@ -1,0 +1,117 @@
+{% extends "netdisk_base.html" %}
+
+{% block netdisk_content %}
+    <div id="app">
+        <div class="row">
+            <h1 class="col">文件分享</h1>
+            <span class="col-auto">
+                <a type="button" class="btn btn-primary" href="/netdisk/upload/">
+                    <i class="el-icon-upload el-icon--right"></i>上传文件
+                </a>
+                </span>
+        </div>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item" v-for="path in breadCrumbData">
+                    <a :href="path.path">{[path.name]}</a>
+                </li>
+            </ol>
+        </nav>
+        <p>搜索得到{{ raw_data | length }}个文件和文件夹</p>
+        <form>
+            <div class="row container">
+                <input type="search" class="form-control col gx-4" placeholder="搜索文件" aria-label="search" name="s"
+                       id="searchInput" v-model="search_input">
+                <button type="button" class="btn btn-primary bi bi-search col-auto" @click="handleSearch"></button>
+            </div>
+        </form>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+{#                    <th scope="col">序号</th>#}
+                    <th scope="col">名称</th>
+                    <th scope="col">大小</th>
+                    <th scope="col">时间</th>
+                    <th scope="col">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for file in raw_data %}
+                <tr>
+{#                    <th scope="row">1</th>#}
+                    {% if file.is_folder %}
+                        <td><a href="/netdisk/?path={{ path }}{{ file.name }}/"><i class="el-icon-folder el-icon--right"></i>{{ file.name }}</a> </td>
+                        <td>文件夹</td>
+                        <td>{{ file.time }}</td>
+                        <td></td>
+                    {% else %}
+                        <td><a href="/netdisk/download?hash={{ file.hash }}"><i class="el-icon-document el-icon--right"></i>{{ file.name }}</a></td>
+                        <td>{{ file.size | filesizeformat }}</td>
+                        <td>{{ file.time }}</td>
+                        <td><a href="/netdisk/download?hash={{ file.hash }}"><i class="el-icon-download el-icon--right"></i>下载</a></td>
+                    {% endif %}
+
+
+
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const netdisk_list = {
+            delimiters: ['{[', ']}'],
+            data() {
+                return {
+                    search_input: "{{ search_string | safe }}",
+                    list_data: {{ list_data | safe }},
+                    path: "{{ path | safe }}"
+                }
+            },
+            methods: {
+                handleSearch() {
+                    if (this.search_input === '') {
+                        this.$alert('请输入搜索内容')
+                    } else {
+                        let search_item = encodeURIComponent(this.search_input)
+                        window.location = "search?s=" + search_item
+                    }
+                },
+                generateURL(path) {
+                    return "/netdisk/?path=" + path
+                }
+            },
+            computed: {
+                breadCrumbData() {
+                    let paths = this.path.split("/")
+                    let result = [{
+                        path: "/netdisk/?path=/",
+                        name: "主页"
+                    }]
+                    let path_now = '/'
+                    for (let i of paths) {
+                        if (i !== "") {
+                            path_now += i + '/'
+                            result.push({
+                                path: "/netdisk/?path=" + path_now,
+                                name: i
+                            })
+                        }
+                    }
+
+                    return result
+                }
+            }
+        }
+        let app = Vue.createApp(netdisk_list)
+        app.use(ElementPlus);
+        app.mount('#app')
+    </script>
+    <style>
+
+    </style>
+
+{% endblock %}

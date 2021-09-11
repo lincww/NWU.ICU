@@ -18,9 +18,11 @@ WEBPUSH_SETTINGS = {
 # use for NetDisk
 LOCAL_UPLOAD_BASE_DIR = "./uploads/"  # Must be end with '/'. And remember to create the folder first.
 PROVIDERS = {
-    # TODO: Finish this
-    "OSS": {
-
+    "COS": {
+        "SECRETID": "<SECRETID>",
+        "SECRETKEY": "<SECRETKEY>",
+        "COS_REGION": "<COS_REGION>",
+        "bucketID": "<bucketID>"
     },
     "QiNiu": {
 
