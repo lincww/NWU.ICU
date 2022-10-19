@@ -1,6 +1,7 @@
 from django.db import models
 from mptt.models import MPTTModel, TreeForeignKey
 from taggit.managers import TaggableManager
+from user.models import User
 
 
 class File(models.Model):
@@ -11,6 +12,8 @@ class File(models.Model):
     path = models.CharField(verbose_name="path to the file", max_length=10240)
     download_count = models.IntegerField(verbose_name="Download Counts.")
     time = models.DateTimeField(verbose_name="Time File Created.")
+    uploader = models.ForeignKey(User, on_delete=models.CASCADE)
+
 
 # Class Entity
 class Entity(MPTTModel):
@@ -19,12 +22,9 @@ class Entity(MPTTModel):
     description = models.TextField(blank=True)
     time = models.DateTimeField(verbose_name="Time Entity Created.", blank=True)  # extend File time if blank.
 
-    # For symbol links
-    is_symbol_link = models.BooleanField()
-    point_address = models.CharField(verbose_name="")
-
     # Non-folder only things
-    is_folder = models.BooleanField()  # If true then belows are blank.
+    file = models.ForeignKey(File, on_delete=models.CASCADE)
+    file_type = models.IntegerField()  # 0 for folder and 1 for file
     tags = TaggableManager()
     size = models.IntegerField(verbose_name="Size of the file, by KiB", blank=True)
     hash = models.CharField(verbose_name="SHA256 hash of the file", max_length=100, blank=True)
@@ -38,3 +38,13 @@ class Entity(MPTTModel):
 
     class MPTTMeta:
         order_insertion_by = ['hash']
+
+
+class PendingFiles(models.Model):
+    file = models.ForeignKey(File, on_delete=models.CASCADE)
+
+
+class DownloadLog(models.Model):
+    time = models.DateTimeField()
+    file = models.ForeignKey(Entity, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
