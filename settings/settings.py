@@ -22,9 +22,13 @@ INSTALLED_APPS = [
     'common',
     'user',
     'report',
+    'share_disk'
     # below are 3rd apps
     'crispy_forms',
     "crispy_bootstrap5",
+    'mptt',
+    'taggit',
+    'rest_framework'
     # 'silk',
     # below are django apps
     'django.contrib.admin',
@@ -111,7 +115,6 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'zh-hans'
 
 USE_I18N = True
-USE_L10N = True
 
 TIME_ZONE = 'Asia/Shanghai'
 USE_TZ = False
@@ -189,3 +192,11 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 # SILKY_META = True
 # SILKY_MAX_RECORDED_REQUESTS = 10 ** 4
 # SILKY_MAX_RESPONSE_BODY_SIZE = 1024  # If response body>1024 bytes, ignore
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
