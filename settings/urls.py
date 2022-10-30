@@ -34,8 +34,12 @@ from course_assessment.views import (
     MyReviewView,
     ReviewAddView,
 )
+from share_disk.views import (
+    EntityView,
+)
 from report.views import ReportClose
 from user.views import CAPTCHA, Login, Logout, RefreshCookies
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -59,6 +63,8 @@ urlpatterns = [
     re_path(r'^report/*$', ReportClose.as_view()),  # 会有人访问 /// 这样的坑爹路径
     path('refresh_cookies/', RefreshCookies.as_view()),
     path('get_captcha/', CAPTCHA.as_view()),
+    # Share Disk
+    path('api/disk/', )
 ]
 
 if "debug_toolbar" in settings.INSTALLED_APPS:

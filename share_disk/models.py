@@ -15,6 +15,7 @@ class File(models.Model):
     download_count = models.IntegerField(verbose_name="Download Counts")
     time = models.DateTimeField(verbose_name="Time File Created")
     uploader = models.ForeignKey(User, on_delete=models.CASCADE)
+    size = models.IntegerField(verbose_name="Size of the file, by KiB", blank=True)
 
 
 # Class Entity
@@ -28,8 +29,6 @@ class Entity(MPTTModel):
     # Non-folder only things
     file = models.ForeignKey(File, on_delete=models.CASCADE)
     tags = TaggableManager()
-    size = models.IntegerField(verbose_name="Size of the file, by KiB", blank=True)
-    hash = models.CharField(verbose_name="SHA256 hash of the file", max_length=100, blank=True)
 
     # Some website-related info
     download_count = models.IntegerField()
@@ -40,10 +39,6 @@ class Entity(MPTTModel):
 
     class MPTTMeta:
         order_insertion_by = ['hash']
-
-
-class PendingFiles(models.Model):
-    file = models.ForeignKey(File, on_delete=models.CASCADE)
 
 
 class DownloadLog(models.Model):
