@@ -1,0 +1,301 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Share Disk API
+  description: API DOC for Share Disk.
+paths:
+  /api/disk/view:
+    get:
+      description: Get Entity View List
+      parameters:
+        - in: query
+          name: path
+          description: queried path
+          schema:
+            type: string
+            example: "/Physics/"
+      responses:
+        '200':
+          description: Succeed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    format: int
+                    example: 200
+                  file_count:  # Non-folder items.
+                    type: number
+                    format: int
+                    example: 0
+                  file_list:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          format: name
+                          example: "quantum_mechanics.pdf"
+                        description:
+                          type: string
+                          example: "A book about quantum mechanics"
+                        time:
+                          type: string
+                          format: data-time
+                          example: "2017-07-21T17:32:28Z"
+                          description: "File created time"
+                        hash:
+                          type: string
+                          format: hash
+                          example: 1be00341082e25c4e251ca6713e767f7131a2823b0052caf9c9b006ec512f6cb
+                          description: Unique SHA256 hash of the file
+                        file_type:
+                          type: integer
+                          maximum: 1
+                          minimum: 0
+                          description: "enum: 0 for folder and 1 for file"
+                        tags:
+                          type: array
+                          items:
+                            type: string
+                      description: tag of the file
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    description: Status code
+                    format: int
+                    example: 400
+                  msg:
+                    type: string
+                    description: Error Message
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    description: Status code
+                    format: int
+                    example: 401
+                  msg:
+                    type: string
+                    description: Error Message
+                    example: Unauthorized
+        '403':
+          description: Permission Denied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    description: Status code
+                    format: int
+                    example: 403
+                  msg:
+                    type: string
+                    description: Error Message
+                    example: "Permission Denied"
+        '404':
+          description: No such file
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    description: Status code
+                    format: int
+                    example: 404
+                  msg:
+                    type: string
+                    description: Error Message
+                    example: "No such file"
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    description: Status code
+                    format: int
+                    example: 500
+                  msg:
+                    type: string
+                    description: Error Message
+                    example: "Internal Error"
+  /api/disk/file:
+    post:
+      description: Get file download link
+      parameters:
+        - in: query
+          name: hash
+          description: File Hash
+          schema:
+            type: string
+            example: 1be00341082e25c4e251ca6713e767f7131a2823b0052caf9c9b006ec512f6cb
+      responses:
+        '200':
+          description: Succeed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    description: Status code
+                    format: int
+                    example: 200
+                  download_addr:
+                    type: string
+                    description: Download Address
+                    format: uri
+                    example: "https://example.com/download/qm.pdf"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    description: Status code
+                    format: int
+                    example: 400
+                  msg:
+                    type: string
+                    description: Error Message
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    description: Status code
+                    format: int
+                    example: 401
+                  msg:
+                    type: string
+                    description: Error Message
+                    example: Unauthorized
+        '403':
+          description: Request Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    description: Status code
+                    format: int
+                    example: 403
+                  msg:
+                    type: string
+                    description: Error Message
+                    example: "Request Forbidden"
+        '404':
+          description: No such file
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    description: Status code
+                    format: int
+                    example: 404
+                  msg:
+                    type: string
+                    description: Error Message
+                    example: "No such file"
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    description: Status code
+                    format: int
+                    example: 500
+                  msg:
+                    type: string
+                    description: Error Message
+                    example: "Internal Error"
+  /api/user/info:
+    get:
+      description: Get user info
+      parameters:
+        - in: query
+          name: userid
+          description: userid
+          schema:
+            type: number
+            example: 2017111111
+      responses:
+        '200':
+          description: Succeed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    description: Status code
+                    format: int
+                    example: 200
+                  msg:
+                    type: string
+                    description: Message
+                    example: Succeed
+                  userid:
+                    type: number
+                    description: User ID
+                    format: int
+                    example: 10086
+                  # TODO: How many user info should here?
+        '403':
+          description: Request Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    description: Status code
+                    format: int
+                    example: 403
+                  msg:
+                    type: string
+                    description: Message
+                    example: Request Forbidden
