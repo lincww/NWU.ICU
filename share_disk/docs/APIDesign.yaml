@@ -62,6 +62,38 @@ paths:
                           items:
                             type: string
                       description: tag of the file
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    description: Status code
+                    format: int
+                    example: 400
+                  msg:
+                    type: string
+                    description: Error Message
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    description: Status code
+                    format: int
+                    example: 401
+                  msg:
+                    type: string
+                    description: Error Message
+                    example: Unauthorized
         '403':
           description: Permission Denied
           content:
@@ -138,6 +170,54 @@ paths:
                     description: Download Address
                     format: uri
                     example: "https://example.com/download/qm.pdf"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    description: Status code
+                    format: int
+                    example: 400
+                  msg:
+                    type: string
+                    description: Error Message
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    description: Status code
+                    format: int
+                    example: 401
+                  msg:
+                    type: string
+                    description: Error Message
+                    example: Unauthorized
+        '403':
+          description: Request Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    description: Status code
+                    format: int
+                    example: 403
+                  msg:
+                    type: string
+                    description: Error Message
+                    example: "Request Forbidden"
         '404':
           description: No such file
           content:
@@ -173,6 +253,13 @@ paths:
   /api/user/info:
     get:
       description: Get user info
+      parameters:
+        - in: query
+          name: userid
+          description: userid
+          schema:
+            type: number
+            example: 2017111111
       responses:
         '200':
           description: Succeed
@@ -197,7 +284,7 @@ paths:
                     example: 10086
                   # TODO: How many user info should here?
         '403':
-          description: Not Login
+          description: Request Forbidden
           content:
             application/json:
               schema:
@@ -211,4 +298,4 @@ paths:
                   msg:
                     type: string
                     description: Message
-                    example: Not Login yet.
+                    example: Request Forbidden
