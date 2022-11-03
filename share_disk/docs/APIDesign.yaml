@@ -30,6 +30,10 @@ paths:
                     type: number
                     format: int
                     example: 0
+                  path:
+                    type: string
+                    format: path
+                    example: '/path/to/file/'
                   file_list:
                     type: array
                     items:
@@ -147,11 +151,11 @@ paths:
       description: Get file download link
       parameters:
         - in: query
-          name: hash
-          description: File Hash
+          name: path
+          description: Path to File
           schema:
             type: string
-            example: 1be00341082e25c4e251ca6713e767f7131a2823b0052caf9c9b006ec512f6cb
+            example: "/path/to/file/qa.pdf"
       responses:
         '200':
           description: Succeed
@@ -250,6 +254,38 @@ paths:
                     type: string
                     description: Error Message
                     example: "Internal Error"
+  /api/disk/upload:
+    post:
+      parameters:
+        - in: query
+          name: path
+          description: Path to Put File
+          schema:
+            type: string
+            example: "/path/to/file/"
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '200':
+          description: Succeed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    description: Status code
+                    format: int
+                    example: 200
+#  /api/disk/search: TODO
+  /api/disk/download:
+  /api/disk/admin/view:
+  /api/disk/admin/modify:
   /api/user/info:
     get:
       description: Get user info
