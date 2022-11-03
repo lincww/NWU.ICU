@@ -1,6 +1,7 @@
 from django.db import models
 from mptt.models import MPTTModel, TreeForeignKey
 from taggit.managers import TaggableManager
+
 from user.models import User
 
 
@@ -27,21 +28,21 @@ class Entity(MPTTModel):
     file_type = models.IntegerField()  # enum: 0 for folder and 1 for file
 
     # Non-folder only things
-    file = models.ForeignKey(File, on_delete=models.CASCADE)
-    tags = TaggableManager()
+    file = models.ForeignKey(File, on_delete=models.CASCADE, blank=True)
+    tags = TaggableManager(blank=True)
 
     # Some website-related info
-    download_count = models.IntegerField()
+    download_count = models.IntegerField(blank=True)
     is_need_review = models.BooleanField(verbose_name="Whether need to be reviewed, which is by user upload.")
 
     # MPTT things
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
 
     class MPTTMeta:
-        order_insertion_by = ['hash']
+        order_insertion_by = ['name']
 
 
 class DownloadLog(models.Model):
     time = models.DateTimeField()
-    file = models.ForeignKey(Entity, on_delete=models.CASCADE)
+    entity = models.ForeignKey(Entity, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)

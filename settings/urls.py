@@ -35,7 +35,7 @@ from course_assessment.views import (
     ReviewAddView,
 )
 from share_disk.views import (
-    EntityView,
+    api_disk_view,
 )
 from report.views import ReportClose
 from user.views import CAPTCHA, Login, Logout, RefreshCookies
@@ -64,7 +64,7 @@ urlpatterns = [
     path('refresh_cookies/', RefreshCookies.as_view()),
     path('get_captcha/', CAPTCHA.as_view()),
     # Share Disk
-    path('api/disk/', )
+    path('api/disk/view', api_disk_view)
 ]
 
 if "debug_toolbar" in settings.INSTALLED_APPS:

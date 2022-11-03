@@ -38,3 +38,6 @@ LOGGING['root'] = {
         'handlers': ['console'],
         'level': 'INFO',
 }
+
+FILE_STORAGE_FOLDER = "./"
+FILE_UPLOAD_FOLDER = "./pending_files"

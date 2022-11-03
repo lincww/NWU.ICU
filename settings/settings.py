@@ -22,7 +22,7 @@ INSTALLED_APPS = [
     'common',
     'user',
     'report',
-    'share_disk'
+    'share_disk',
     # below are 3rd apps
     'crispy_forms',
     "crispy_bootstrap5",

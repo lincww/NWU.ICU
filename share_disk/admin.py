@@ -1,3 +1,6 @@
 from django.contrib import admin
+from mptt.admin import MPTTModelAdmin
+from .models import Entity, File
 
-# Register your models here.
+admin.site.register(Entity, MPTTModelAdmin)
+admin.site.register(File)
